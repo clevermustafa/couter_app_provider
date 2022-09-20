@@ -10,4 +10,8 @@ class CounterProvider extends ChangeNotifier {
   }
 
   /// decrement 
+  void decrement(){
+    counter--;
+    notifyListeners();
+  }
 }

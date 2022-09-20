@@ -1,4 +1,5 @@
 import 'package:counter_app_provider/counter_provider.dart';
+import 'package:counter_app_provider/thirdPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => CounterProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -69,11 +71,14 @@ class HomePage extends StatelessWidget {
             },
             child: const Icon(Icons.add),
           ),
-          const SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
           FloatingActionButton(
             heroTag: "decrement",
             onPressed: () {
               // TODO: call decrement method from CounterProvider
+              Provider.of<CounterProvider>(context, listen: false).decrement();
             },
             child: const Icon(Icons.remove),
           ),
@@ -94,16 +99,48 @@ class NextPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Next Page"),
       ),
-      body: Center(
-        child: Text(
-          Provider.of<CounterProvider>(context).counter.toString()
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child:
+                Text(Provider.of<CounterProvider>(context).counter.toString()),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ThirdPage();
+                  },
+                ),
+              );
+            },
+            child: Text("Third Page"),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<CounterProvider>(context, listen: false).increment();
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "increment",
+            onPressed: () {
+              Provider.of<CounterProvider>(context, listen: false).increment();
+            },
+            child: const Icon(Icons.add),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          FloatingActionButton(
+            heroTag: "decrement",
+            onPressed: () {
+              Provider.of<CounterProvider>(context, listen: false).decrement();
+            },
+            child: const Icon(Icons.remove),
+          ),
+        ],
       ),
     );
   }
